@@ -1,0 +1,19 @@
+UUID Support
+==============
+
+requires uuidtools
+
+Allows you to use UUIDs in migrations and have them stored and queried efficiently.
+
+Instead of using char(36) everywhere, this plugin endeavours to use native types where supported and appropriate types elsewhere for speed
+
+Example
+=======
+
+create_table :members, :id => false do |t|
+	t.uuid	:id
+	t.timestamps
+end
+
+
+Copyright (c) 2010 Brendan Ragan, released under the MIT license
