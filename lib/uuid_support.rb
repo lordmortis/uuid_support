@@ -1,1 +1,1 @@
-# UuidSupport
+require 'uuid_support/uuid_support_railtie.rb' if defined?(Rails)
