@@ -7,6 +7,13 @@ Allows you to use UUIDs in migrations and have them stored and queried efficient
 
 Instead of using char(36) everywhere, this plugin endeavours to use native types where supported and appropriate types elsewhere for speed
 
+Types Used:
+  Mysql - binary(16)
+  Postgresql - uid
+  SQLite - binary(16)
+
+Due to the way this plugin works, it will override all instances of the above and return UUIDTools::UUID instead of String
+
 Example
 =======
 
