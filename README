@@ -14,11 +14,16 @@ Types Used:
 
 Due to the way this plugin works, it will override all instances of the above and return UUIDTools::UUID instead of String
 
+TODO
+=============
+Ensure uuid ID types are generated properly if not set on a create.
+
 Example
 =======
 
 create_table :members, :id => false do |t|
-	t.uuid	:id
+	t.uuid_pkey	:id
+	t.uuid :group_id
 	t.timestamps
 end
 

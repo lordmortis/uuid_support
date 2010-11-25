@@ -4,24 +4,7 @@ module ActiveRecord::ConnectionAdapters
 			NATIVE_DATABASE_TYPES.merge({:uuid => { :name => "binary", :limit => 16}, :uuid_pkey => { :name => "binary(16) PRIMARY KEY"}})
 	  end
 
-
-		# Maps logical Rails types to MySQL-specific data types.
-	  def type_to_sql(type, limit = nil, precision = nil, scale = nil)
-	    return super unless type.to_s == 'integer'
-			print("MYSQL: Type is: #{type}\n")
-		
-	    case limit
-	    when 1; 'tinyint'
-	    when 2; 'smallint'
-	    when 3; 'mediumint'
-	    when nil, 4, 11; 'int(11)'  # compatibility with MySQL default
-	    when 5..8; 'bigint'
-	    else raise(ActiveRecordError, "No integer type has byte size #{limit}")
-	    end
-	  end
-
 		def quote(value, column = nil)
-			print("Quote! #{value}\n")
       if value.kind_of?(String) && column && column.type == :binary && column.class.respond_to?(:string_to_binary)
         s = column.class.string_to_binary(value).unpack("H*")[0]
         "x'#{s}'"

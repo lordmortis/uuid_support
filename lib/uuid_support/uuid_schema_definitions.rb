@@ -13,7 +13,6 @@ end
 
 module ActiveRecord::ConnectionAdapters::SchemaStatements
 	def type_to_sql(type, limit = nil, precision = nil, scale = nil) #:nodoc:
-		print("SchemaStatements: Type is: #{type}\n")
 	  if native = native_database_types[type]
 	    column_type_sql = (native.is_a?(Hash) ? native[:name] : native).dup
 
@@ -56,6 +55,7 @@ class ActiveRecord::ConnectionAdapters::Column
       when :binary        then String
       when :boolean       then Object
 			when :uuid					then UUIDTools::UUID
+			when :uuid_pkey			then UUIDTools::UUID
     end
   end
 
@@ -75,6 +75,7 @@ class ActiveRecord::ConnectionAdapters::Column
       when :binary    then self.class.binary_to_string(value)
       when :boolean   then self.class.value_to_boolean(value)
 			when :uuid			then self.class.string_to_uuid(value)
+			when :uuid_pkey	then self.class.string_to_uuid(value)	
       else value
     end
   end
@@ -93,11 +94,12 @@ class ActiveRecord::ConnectionAdapters::Column
       when :binary    then "#{self.class.name}.binary_to_string(#{var_name})"
       when :boolean   then "#{self.class.name}.value_to_boolean(#{var_name})"
 			when :uuid			then "#{self.class.name}.string_to_uuid(#{var_name})"
+			when :uuid_pkey then "#{self.class.name}.string_to_uuid(#{var_name})"				
       else nil
     end
   end
 
 	def uuid?
-		(type == :uuid)
+		(type == :uuid) or (type == :uuid_pkey)
 	end
 end
