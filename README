@@ -14,9 +14,11 @@ Types Used:
 
 Due to the way this plugin works, it will override all instances of the above and return UUIDTools::UUID instead of String
 
+IDs will be generated via UUIDTools::UUID.timestamp_create when a record with a UUID pkey is created (assuming the ID is null)
+
 TODO
 =============
-Ensure uuid ID types are generated properly if not set on a create.
+Ensure schema.rb works (right now only migrations do!)
 
 Example
 =======
