@@ -6,6 +6,7 @@ module UUIDSupport
 				require 'uuid_support/uuid_activerecord_persistence'
 				require 'uuid_support/uuid_fields_mysql' if (defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) != nil)
 				require 'uuid_support/uuid_fields_postgresql' if (defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) != nil)		
+				require 'uuid_support/uuid_fields_arel' if (defined?(Arel::Visitors::PostgreSQL) != nil)
 			end
 		end
   end
