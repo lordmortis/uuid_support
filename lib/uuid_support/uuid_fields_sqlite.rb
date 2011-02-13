@@ -39,14 +39,7 @@ module ActiveRecord::ConnectionAdapters
 	
 		def quote(value, column = nil)
 			if value.kind_of?(UUIDTools::UUID)
-				value = value.raw
-				value.gsub(/\0|\%/n) do |b|
-          case b
-            when "\0" then "%00"
-            when "%"  then "%25"
-          end
-        end
-				"'#{quote_string(value)}'"
+				"X'#{value.hexdigest}'"
 			else
         super
       end

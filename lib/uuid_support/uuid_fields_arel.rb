@@ -1,14 +1,7 @@
 module Arel::Visitors
 	class SQLite
 		def visit_UUIDTools_UUID o
-			value = o.raw
-			value.gsub(/\0|\%/n) do |b|
-        case b
-          when "\0" then "%00"
-          when "%"  then "%25"
-        end
-      end
-			visit_String(value)
+			"X'#{o.hexdigest}'"
 		end
 
 	end
