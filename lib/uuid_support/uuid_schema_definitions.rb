@@ -63,6 +63,8 @@ class ActiveRecord::ConnectionAdapters::Column
   def type_cast(value)
     return nil if value.nil?
     case type
+			when :uuid			then self.class.string_to_uuid(value)
+			when :uuid_pkey	then self.class.string_to_uuid(value)	
       when :string    then value
       when :text      then value
       when :integer   then value.to_i rescue value ? 1 : 0
@@ -74,14 +76,14 @@ class ActiveRecord::ConnectionAdapters::Column
       when :date      then self.class.string_to_date(value)
       when :binary    then self.class.binary_to_string(value)
       when :boolean   then self.class.value_to_boolean(value)
-			when :uuid			then self.class.string_to_uuid(value)
-			when :uuid_pkey	then self.class.string_to_uuid(value)	
       else value
     end
   end
 
   def type_cast_code(var_name)
     case type
+			when :uuid			then "#{self.class.name}.string_to_uuid(#{var_name})"
+			when :uuid_pkey then "#{self.class.name}.string_to_uuid(#{var_name})"				
       when :string    then nil
       when :text      then nil
       when :integer   then "(#{var_name}.to_i rescue #{var_name} ? 1 : 0)"
@@ -93,8 +95,6 @@ class ActiveRecord::ConnectionAdapters::Column
       when :date      then "#{self.class.name}.string_to_date(#{var_name})"
       when :binary    then "#{self.class.name}.binary_to_string(#{var_name})"
       when :boolean   then "#{self.class.name}.value_to_boolean(#{var_name})"
-			when :uuid			then "#{self.class.name}.string_to_uuid(#{var_name})"
-			when :uuid_pkey then "#{self.class.name}.string_to_uuid(#{var_name})"				
       else nil
     end
   end
