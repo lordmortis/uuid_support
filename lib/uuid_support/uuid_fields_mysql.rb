@@ -12,6 +12,8 @@ module ActiveRecord::ConnectionAdapters
         value.to_s("F")
       elsif value.kind_of?(UUIDTools::UUID)
 				"0x#{value.hexdigest()}"
+			elsif value.kind_of?(String) && column && column.type == :uuid
+				"0x#{UUIDTools::UUID.parse(value).hexdigest}"
 			else
         super
       end

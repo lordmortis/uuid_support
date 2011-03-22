@@ -40,6 +40,8 @@ module ActiveRecord::ConnectionAdapters
 		def quote(value, column = nil)
 			if value.kind_of?(UUIDTools::UUID)
 				"X'#{value.hexdigest}'"
+			elsif value.kind_of?(String) && column && column.type == :uuid
+				"X'#{UUIDTools::UUID.parse(value).hexdigest}'"
 			else
         super
       end
