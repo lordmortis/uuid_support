@@ -40,6 +40,32 @@ module ActiveRecord::ConnectionAdapters::SchemaStatements
 	end
 end
 
+module ActiveRecord::Associations::ClassMethods
+  def collection_accessor_methods(reflection, association_proxy_class, writer = true)
+    collection_reader_method(reflection, association_proxy_class)
+
+    if writer
+      redefine_method("#{reflection.name}=") do |new_value|
+        # Loads proxy class instance (defined in collection_reader_method) if not already loaded
+        association = send(reflection.name)
+        association.replace(new_value)
+        association
+      end
+
+      redefine_method("#{reflection.name.to_s.singularize}_ids=") do |new_value|
+        pk_column = reflection.primary_key_column
+				ids = (new_value || []).reject { |nid| nid.blank? }
+				if pk_column.type != :uuid and pk_column.type != :uuid_pkey        
+        	ids.map!{ |i| pk_column.type_cast(i) }
+				else
+					ids.map!{ |i| UUIDTools::UUID.parse(i) }
+      	end
+					send("#{reflection.name}=", reflection.klass.find(ids).index_by{ |r| r.id }.values_at(*ids))
+      end
+    end
+  end	
+end
+
 class ActiveRecord::ConnectionAdapters::Column
   # Returns the Ruby class that corresponds to the abstract data type.
   def klass

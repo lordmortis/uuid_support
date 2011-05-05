@@ -1,6 +1,6 @@
 module UUIDSupport
   class UUIDSupport < ::Rails::Railtie
-		initializer "my_cool_railtie.boot_adapter_hooks", :after => "active_record.initialize_database" do
+		initializer "uuid_support.boot_adapter_hooks", :after => "active_record.initialize_database" do
 			ActiveSupport.on_load :active_record do
 				require 'uuid_support/uuid_schema_definitions.rb'
 				require 'uuid_support/uuid_activerecord_persistence'
