@@ -3,7 +3,11 @@ module ActiveRecord::ConnectionAdapters
 		class <<  self
 			def string_to_uuid(value)
 				if (value.class == String)
-					UUIDTools::UUID.parse_raw(binary_to_string(value))
+					if value.strip.length == 36 or value.strip.length == 32
+						UUIDTools::UUID.parse(value)
+					else
+						UUIDTools::UUID.parse_raw(binary_to_string(value))
+					end
 				else
 					value
 				end					
