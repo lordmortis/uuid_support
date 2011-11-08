@@ -20,7 +20,7 @@ module ActiveRecord::ConnectionAdapters
     end
 		
 	end
-	
+
 	class SQLiteAdapter
 	  def native_database_types
       {
@@ -51,6 +51,8 @@ module ActiveRecord::ConnectionAdapters
       end
     end	
 
+
+
 #		def quote(value, column = nil)
 #     if value.kind_of?(String) && column && column.type == :binary && column.class.respond_to?(:string_to_binary)
 #        s = column.class.string_to_binary(value).unpack("H*")[0]
@@ -64,4 +66,10 @@ module ActiveRecord::ConnectionAdapters
 #      end
 #		end
 	end
+end
+
+class Arel::Visitors::Visitor
+  def visit_UUIDTools_UUID o
+    "X'#{o.hexdigest}'"
+  end
 end

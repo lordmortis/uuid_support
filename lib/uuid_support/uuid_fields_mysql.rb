@@ -40,3 +40,22 @@ module ActiveRecord::ConnectionAdapters
 	end
 	
 end
+
+class Arel::Visitors::Visitor
+	def visit_UUIDTools_UUID o
+		visit_String("0x#{o.hexdigest()}")
+	end
+end
+
+module UUIDTools
+  class UUID
+    def quoted_id
+      s = raw.unpack("H*")[0]
+      "x'#{s}'"
+    end
+    
+    def id
+    	print "BLEAT"
+    end  	
+  end
+end

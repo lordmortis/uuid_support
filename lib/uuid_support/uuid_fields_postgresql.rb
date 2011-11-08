@@ -91,6 +91,23 @@ module ActiveRecord::ConnectionAdapters
           super
       end
 		end	
-	end
-	
+	end	
+end
+
+class Arel::Visitors::Visitor
+  def visit_UUIDTools_UUID o
+    visit_String(o.to_s)
+  end
+end
+
+module UUIDTools
+  class UUID
+    def quoted_id
+      self.to_s
+    end
+    
+    def id
+      self.to_s
+    end   
+  end
 end
